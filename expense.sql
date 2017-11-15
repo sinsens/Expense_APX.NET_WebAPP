@@ -105,7 +105,7 @@ CREATE TABLE `t_wallets` (
 -- View structure for v_trades
 -- ----------------------------
 DROP VIEW IF EXISTS `v_trades`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER  VIEW `v_trades` AS SELECT
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY INVOKER  VIEW `v_trades` AS SELECT
 t_trades.fuid,
 t_trades.ftrades_id,
 t_trades.fincome,
