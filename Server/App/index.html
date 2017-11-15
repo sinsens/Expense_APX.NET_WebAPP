@@ -1,0 +1,234 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Expense</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="css/mui.min.css">
+    <style>
+        html,
+        body {
+            background-color: #efeff4;
+        }
+
+        p {
+            text-indent: 22px;
+        }
+
+        span.mui-icon {
+            font-size: 14px;
+            color: #007aff;
+            margin-left: -15px;
+            padding-right: 10px;
+        }
+
+        .mui-off-canvas-left {
+            color: #fff;
+        }
+
+        .title {
+            margin: 35px 15px 10px;
+        }
+
+            .title + .content {
+                margin: 10px 15px 35px;
+                color: #bbb;
+                text-indent: 1em;
+                font-size: 14px;
+                line-height: 24px;
+            }
+
+        input {
+            color: #000;
+        }
+    </style>
+    <script type="text/javascript" src="js/mui.min.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/dateFormat.js"></script>
+    <script>
+        mui.init();
+    </script>
+    <link href="css/font-awesome.min.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div id="offCanvasWrapper" class="mui-off-canvas-wrap mui-draggable">
+        <!--侧滑菜单部分-->
+        <aside id="offCanvasSide" class="mui-off-canvas-left">
+            <div id="offCanvasSideScroll" class="mui-scroll-wrapper">
+                <div class="mui-scroll" style="padding-top: 20%;">
+                    <div class="title" style="margin-bottom: 25px;height:40%;color:burlywood;font-size:1.8em">
+                        <script>
+                            if (localStorage.getItem("fusers_name") != null) {
+                                document.write(localStorage.getItem("fusers_name"));
+                                document.write("<p>" + localStorage.getItem("fusers_email") + "</p>");
+                            } else {
+                                var body = "<div class='title'>";
+                                body += '<button id="btnLogin" type="button" class="mui-btn mui-btn-primary mui-btn-block" style="padding: 10px;" onclick="location.href=\'login.html\'">';
+                                body += '登录';
+                                body += '</button>';
+                                body += "</title>";
+
+                                document.write(body);
+                            }
+                        </script>
+                    </div>
+                    <ul class="mui-table-view mui-table-view-chevron mui-table-view-inverted">
+                        <li class="mui-table-view-cell">
+                            <a class="mui-navigate-right">
+                                总览
+                            </a>
+                        </li>
+                        <li class="mui-table-view-cell">
+                            <a class="mui-navigate-right" id="btnWallets">
+                                账户
+                            </a>
+                        </li>
+                        <li class="mui-table-view-cell">
+                            <a class="mui-navigate-right" id="btnTrades">
+                                交易
+                            </a>
+                        </li>
+                        <li class="mui-table-view-cell">
+                            <a class="mui-navigate-right" id="btnReport">
+                                报表
+                            </a>
+                        </li>
+                        <li class="mui-table-view-cell">
+                            <a class="mui-navigate-right" id="btnCategories">
+                                分类
+                            </a>
+                        </li>
+                        <li class="mui-table-view-cell">
+                            <a class="mui-navigate-right" id="btnLogout">
+                                退出
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </aside>
+        <!--主界面部分-->
+        <div class="mui-inner-wrap">
+            <header class="mui-bar mui-bar-nav">
+                <a href="#offCanvasSide" class="mui-icon mui-action-menu mui-icon-bars mui-pull-left"></a>
+                <h1 class="mui-title">Expense</h1>
+                <a id="btnAddTrade" class="mui-icon mui-icon-plusempty mui-pull-right"></a>
+            </header>
+            <div id="offCanvasContentScroll" class="mui-content mui-scroll-wrapper">
+                <div class="mui-scroll" style="padding-bottom:40px">
+                    <ul class="mui-table-view mui-table-view-chevron mui-list-unstyled" id='myTrades'></ul>
+                </div>
+            </div>
+            <footer class="mui-bar mui-bar-footer" style="text-align:center;">
+                <button id="btnPrvPage" style="float:left" class="mui-btn mui-pull-left">上一页</button>
+                <span style="margin-top:15px;" id="showPage" class="mui-badge">1</span>
+                <button id="btnNextPage" style="float:right" class="mui-btn mui-pull-right">下一页</button>
+            </footer>
+        </div>
+    </div>
+    <script type="text/javascript">
+                            function updateTrade(fid) {
+                                location.href = 'Trades/update.html?fid=' + fid;
+                            }
+                            var page = 1;
+                            /* 获取交易记录 */
+                            function loadData() {
+                                app.getData('/Trades/get.aspx', {
+                                    'ftoken': localStorage.ftoken,
+                                    'fpage': this.page
+                                },
+                                    function (data) {
+                                        if (data["Body"] == null || data["Body"].length < 1) {
+                                            mui.toast("没有数据");
+                                            return;
+                                        }
+                                        console.log(data["Body"]);
+                                        var li = document.getElementById('myTrades');
+                                        var str = "";
+                                        data["Body"].forEach(function (value, index, array) {
+                                            str += '<li class="mui-table-view-cell" onclick="updateTrade(\'' + value['ftrades_id'] + '\')" style="padding-right:20px">';
+                                            str += '<div class="mui-row">';
+                                            str += '<div class="mui-col-sm-2">';
+                                            str += '<div style="background-color:' + '#' + value['fcategories_color'] + ';height:45px;width:45px;border-radius:50%;text-align:center;padding-top:0.8em;font-size:0.8em;line-height:1.1em;">';
+                                            str += new Date(value['fdate']).Format('周w<br/>dd') + '</div></div>'; // end of mui-col-sm-1 显示日期
+                                            str += '<div class="mui-col-sm-6" style="float:left;text-align:left;padding-left:10px;">'; //mui-col-sm-8
+                                            str += '<div class="mui-row">'; //第一行备注或分类
+                                            str += value['fnote'].length > 0 ? value['fnote'] : value['fcategories_name'];
+                                            str += '</div>'; //第一行备注或分类
+                                            str += '<div  class="mui-row">'; //第二行备注或分类
+                                            if (value['ftags'].length > 0) {
+                                                value['ftags'].split(',').forEach(function (val) {
+                                                    str += '<span class="mui-badge">';
+                                                    str += val;
+                                                    str += '</span>';
+                                                });
+                                            } else {
+
+                                            }
+
+                                            str += '</div>'; //二一行备注或分类
+                                            str += '</div>'; //mui-col-sm-8
+
+                                            str += '<div class="mui-col-sm-3" style="float:right;text-align:right">';
+                                            str += '<div class="mui-row" style="font-size:1.3em;font-weight:bold;color:' + (value['fincome'] == 1 ? 'red' : 'green'); //显示金额
+                                            str += '">' + value['fmoney'] + '&nbsp;<span class="fa fa-cny"></span></div>';
+                                            str += '<div class="mui-row" style="color:gray;font-size:0.8em;float:right">'; // 显示账户
+
+                                            str += value['fwallets_name'];
+
+                                            str += '</div>';
+                                            str += '</div>';
+                                            str += '</li>';
+                                        });
+                                        li.innerHTML = str;
+                                    });
+                            }
+                            mui.ready(function () {
+                                // 开启区域滚动
+                                mui('.mui-scroll-wrapper').scroll();
+                                mui("offCanvasSideScroll").scroll();
+                                loadData();
+                                var showPage = document.getElementById("showPage");
+                                document.getElementById("btnPrvPage").addEventListener("tap", function () {
+                                    if (page > 1) {
+                                        page -= 1;
+                                        loadData();
+                                        showPage.innerText = page;
+                                    } else {
+                                        mui.toast("已经是第一页了");
+                                    }
+                                });
+                                document.getElementById("btnAddTrade").addEventListener("tap", function () {
+                                    location.href = "Trades/add.html";
+                                });
+                                document.getElementById("btnNextPage").addEventListener("tap", function () {
+                                    page += 1;
+                                    loadData();
+                                    showPage.innerText = page;
+                                });
+
+                                document.getElementById("btnTrades").addEventListener("tap", function () {
+                                    location.href = "Trades/index.html";
+                                });
+                                document.getElementById("btnReport").addEventListener("tap", function () {
+
+                                });
+                                document.getElementById("btnCategories").addEventListener("tap", function () {
+                                    location.href = "Categories/index.html";
+                                });
+                                document.getElementById("btnWallets").addEventListener("tap", function () {
+                                    location.href = "Wallets/index.html";
+                                });
+                                document.getElementById("btnLogout").addEventListener("tap", function () {
+                                    app.Logout();
+                                });
+                            });
+    </script>
+</body>
+
+</html>

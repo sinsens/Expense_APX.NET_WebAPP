@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/font-awesome.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<script src="js/mui.min.js"></script>
+		<script src="js/app.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<header class="mui-bar mui-bar-nav">
+			<a href="#offCanvasSide" class="mui-icon mui-action-menu mui-icon-bars mui-pull-left"></a>
+			<h1 class="mui-title">总览</h1>
+			<a id="btnAddTrade" class="mui-icon mui-icon-plusempty mui-pull-right"></a>
+		</header>456
+		<div class="mui-content">
+			<div id="btnAccount" class="mui-card" style="padding: 20px;">
+				<label style="font-size: large;font-weight: bold;">账户余额</label>
+				<span class="fa fa-cny" style="float: right;font-size: 25px;"></span>
+				<label id="fbalance" style="float: right;font-size: 35px;color:red"></label>
+			</div>
+			<div id="btnAccount" class="mui-card" style="padding: 20px;">
+				<label style="font-size: large;font-weight: bold;">一个月内交易了</label>
+				<span style="float: right;font-size: 25px;">次</span>
+				<label id="fbalance" style="float: right;font-size: 35px;color:#2FA4E7"></label>
+			</div>
+		</div>
+		<script>
+			mui.ready(function() {
+				mui(".mui-scroll-wrapper").scroll();
+			});
+		</script>
+	</body>
+
+</html>

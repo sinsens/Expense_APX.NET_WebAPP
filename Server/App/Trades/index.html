@@ -1,0 +1,115 @@
+﻿<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>查看交易记录</title>
+    <link href="../css/mui.min.css" rel="stylesheet" />
+    <link href="../css/font-awesome.min.css" rel="stylesheet" />
+</head>
+
+<body class="mui-ios mui-ios-9 mui-ios-9-1">
+    <script src="../js/mui.min.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="../js/dateFormat.js"></script>
+    <script type="text/javascript">
+        mui.init()
+    </script>
+    <header class="mui-bar mui-bar-nav">
+        <a href="#offCanvasSide" class="mui-icon mui-icon-back mui-pull-left" onclick="history.back()"></a>
+        <h1 class="mui-title">交易记录</h1>
+        <a href="#offCanvasSide" class="mui-icon mui-icon-plusempty mui-pull-right" onclick="location.href='add.html'"></a>
+    </header>
+    <div class="mui-content">
+        <!--下拉刷新容器-->
+        <div class="mui-scroll-wrapper" style="padding:45px 0 45px 0;">
+            <!--数据列表-->
+            <ul class="mui-table-view mui-table-view-chevron mui-list-unstyled" id='myTrades'></ul>
+        </div>
+    </div>
+    <footer class="mui-bar mui-bar-footer" style="text-align:center;">
+        <button id="btnPrvPage" style="float:left" class="mui-btn mui-pull-left">上一页</button>
+        <span style="margin-top:15px;" id="showPage" class="mui-badge">1</span>
+        <button id="btnNextPage" style="float:right" class="mui-btn mui-pull-right">下一页</button>
+    </footer>
+
+    <script>
+        function updateTrade(fid) {
+            location.href = 'update.html?fid=' + fid;
+        }
+        var page = 1;
+        /* 获取交易记录 */
+        function loadData() {
+            app.getData('/Trades/get.aspx', {
+                'ftoken': localStorage.ftoken,
+                'fpage': this.page
+            },
+                function (data) {
+                    if (data["Body"] == null || data["Body"].length < 1) { mui.toast("没有数据"); return; }
+                    console.log(data["Body"]);
+                    var li = document.getElementById('myTrades');
+                    var str = "";
+                    data["Body"].forEach(function (value, index, array) {
+                        str += '<li class="mui-table-view-cell" onclick="updateTrade(\'' + value['ftrades_id'] + '\')" style="padding-right:20px">';
+                        str += '<div class="mui-row">';
+                        str += '<div class="mui-col-sm-2">';
+                        str += '<div style="background-color:' + '#' + value['fcategories_color'] + ';height:45px;width:45px;border-radius:50%;text-align:center;padding-top:0.8em;font-size:0.8em;line-height:1.1em;">';
+                        str += new Date(value['fdate']).Format('周w<br/>dd') + '</div></div>'; // end of mui-col-sm-1 显示日期
+                        str += '<div class="mui-col-sm-6" style="float:left;text-align:left;padding-left:10px;">'; //mui-col-sm-8
+                        str += '<div class="mui-row">'; //第一行备注或分类
+                        str += value['fnote'].length > 0 ? value['fnote'] : value['fcategories_name'];
+                        str += '</div>'; //第一行备注或分类
+                        str += '<div class="mui-row">'; //第二行备注或分类
+                        if (value['ftags'].length > 0) {
+                            value['ftags'].split(',').forEach(function (val) {
+                                str += '<span class="mui-badge">';
+                                str += val;
+                                str += '</span>';
+                            });
+                        } else {
+
+                        }
+
+                        str += '</div>'; //二一行备注或分类
+                        str += '</div>'; //mui-col-sm-8
+
+                        str += '<div class="mui-col-sm-3" style="float:right;text-align:right">';
+                        str += '<div class="mui-row" style="font-size:1.3em;font-weight:bold;color:' + (value['fincome'] == 1 ? 'red' : 'green'); //显示金额
+                        str += '">' + value['fmoney'] + '&nbsp;<span class="fa fa-cny"></span></div>';
+                        str += '<div class="mui-row" style="color:gray;font-size:0.8em;float:right">'; // 显示账户
+
+                        str += value['fwallets_name'];
+
+                        str += '</div>';
+                        str += '</div>';
+                        str += '</li>';
+                    });
+                    li.innerHTML = str;
+                });
+        }
+        mui.ready(function () {
+            mui('.mui-scroll-wrapper').scroll();
+            loadData();
+            var showPage = document.getElementById("showPage");
+            document.getElementById("btnPrvPage").addEventListener("tap", function () {
+                if (page > 1) {
+                    page -= 1;
+                    loadData();
+                    showPage.innerText = page;
+                } else {
+                    mui.toast("已经是第一页了");
+                }
+            });
+            document.getElementById("btnNextPage").addEventListener("tap", function () {
+                page += 1;
+                loadData();
+                showPage.innerText = page;
+            });
+        });
+    </script>
+</body>
+
+</html>

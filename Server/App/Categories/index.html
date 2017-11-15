@@ -1,0 +1,59 @@
+﻿<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>查看我的分类</title>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/app.js"></script>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a href="#offCanvasSide" class="mui-icon mui-icon-back mui-pull-left" onclick="history.back()"></a>
+			<h1 class="mui-title">分类</h1>
+			<a href="#offCanvasSide" class="mui-icon mui-icon-plusempty mui-pull-right" onclick="location.href='add.html'"></a>
+		</header>
+		<div class="mui-content">
+			<!--下拉刷新容器-->
+			<div class="mui-scroll">
+				<!--数据列表-->
+				<ul class="mui-table-view mui-table-view-chevron mui-list-unstyled" id='myCategorie'></ul>
+			</div>
+		</div>
+		<script>
+			var deleteCategorie = function(fid,fname){
+					mui.confirm("确认删除分类'"+fname+"'?", "将同时删除所有相关记录", ["取消", "删除"],function(e){
+						if(e.index==1){
+							app.Categorie_Delte(fid);
+							//setTimeout('location.reload()', 1500);	
+						}
+					});
+				}
+			mui.ready(function() {
+				
+				mui.getJSON('/Categories/Get.aspx', {
+						'ftoken': localStorage.ftoken
+					},
+					function(data) {
+                        if (data["Body"] == null || data["Body"].length < 1) { return; }
+						var li = document.getElementById('myCategorie');
+						var str = "";
+						data["Body"].forEach(function(value, index, array) {
+							str += '<li class="mui-table-view-cell">';
+							str += '<button style="height:20px;width:10px;float:left;background:#'+value['fcategories_color']+'"></button>';
+							str += '<a href="update.html?fid='+value['fcategories_id']+'&fname='+value['fcategories_name']+"&fcolor="+value['fcategories_color']+'">' + value['fcategories_name']  + '</a>';
+							str += '<button onclick="deleteCategorie(\'' + value['fcategories_id'] + '\',\''+value['fcategories_name']+'\')" style="float:right" class="mui-btn mui-btn-danger mui-icon mui-icon-trash"></button>';
+							str += '</li>';
+							li.innerHTML = str;
+						});
+					});
+			});
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,81 @@
+﻿<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>添加账户</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/font-awesome.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/app.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<header class="mui-bar mui-bar-nav">
+			<a href="#offCanvasSide" class="mui-icon mui-icon-back mui-pull-left" onclick="history.back()"></a>
+			<h1 class="mui-title">添加账户</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-input-group">
+				<div class="mui-input-row">
+					<label style="width: auto;">名称</label>
+					<input id="fname" class="mui-input" type="text" maxlength="15" placeholder="请输入账户名称" style="width: auto;float: left;" />
+				</div>
+				<div class="mui-input-row">
+					<label style="width: auto;">余额</label>
+					<span class="fa fa-cny" style="width: auto;"><input id="fbalance" type="number" class="mui-input-numbox" placeholder="余额" style="width: auto;" /></span>
+
+				</div>
+				<div class="mui-input-row">
+					<label style="width: auto;">备注</label>
+					<span class="fa fa-info" style="width: auto;"><input id="fnote" type="text" maxlength="15" placeholder="备注信息" style="width: auto;" /></spa>
+				</div>
+				<div class="mui-input-row mui-checkbox mui-right">
+					<label>包含在总计中</label>
+					<input id="freport" type="checkbox" checked>
+				</div>
+			</div>
+		</div>
+		<div class="mui-bar-footer">
+			<div class="mui-button-row">
+				<button type="button" class="mui-btn mui-btn-danger" onclick="history.back()">取消</button>
+				<button id="btnSave" type="button" class="mui-btn mui-btn-primary">确认</button>
+			</div>
+			<script>
+				mui.ready(function(){
+					var freportStat = 1;
+					document.getElementById('freport').addEventListener("click",function check(e) {
+						freportStat = freportStat == 0?1:0;
+					});
+					document.getElementById('btnSave').addEventListener("click",function saveWallet() {
+						var fname = document.getElementById('fname').value;
+						var fbalance = document.getElementById('fbalance').value;
+						var fnote = document.getElementById('fnote').value;
+						if(fname.length < 1) {
+							mui.toast('账户名称不能为空'+fname.length);
+							return;
+                        }
+                        if (parseFloat(fbalance).toString() == "NaN") {
+                            mui.toast('请输入正确的金额数');
+                            return;
+                        }
+						var wallet = {
+							'fname': fname,
+							'fbalance' : fbalance,
+							'fnote': fnote,
+							'freport': freportStat
+						}
+						app.Wallet_Add(wallet);
+					});
+					
+				});
+
+			</script>
+		</div>
+	</body>
+
+</html>

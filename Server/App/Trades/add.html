@@ -1,0 +1,197 @@
+﻿<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>添加交易记录</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" /><!-- 禁止缩放 -->
+    <link href="../css/mui.min.css" rel="stylesheet" />
+    <link href="../css/font-awesome.min.css" rel="stylesheet" />
+</head>
+
+<body>
+    <script src="../js/mui.min.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="../js/dateFormat.js"></script>
+    <script type="text/javascript">
+        mui.init()
+    </script>
+    <header class="mui-bar mui-bar-nav">
+        <a href="#offCanvasSide" class="mui-icon mui-icon-back mui-pull-left" onclick="history.back()"></a>
+        <h1 class="mui-title">添加交易记录</h1>
+    </header>
+    <div class="mui-content">
+        <div class="mui-input-group">
+            <div class="mui-input-row mui-checkbox mui-right">
+                <label>收入类型</label>
+                <input id="fincome" type="checkbox">
+            </div>
+            <div class="mui-input-row" style="padding-left: 20px;">
+                <span class="fa fa-cny"></span>
+                <input id="fbalance" type="number" class="mui-input-numbox" placeholder="金额" style="width:auto;font-weight: bold;margin-left: 10px;" />
+            </div>
+            <div class="mui-input-row" style="padding-left: 20px;">
+                <span class="fa fa-calendar"></span>
+                <input id="fdate" type="datetime" style="width: auto;" />
+                <script type="application/javascript">
+                    var now = new Date().Format("yyyy-MM-dd hh:mm:ss");
+                    document.getElementById('fdate').value = now;
+                </script>
+            </div>
+            <div class="mui-input-row" style="padding-left: 20px;">
+                <span id="fcolor" class="fa fa-circle"></span>
+                <span style="margin-left: 20px">
+                    <select id="fcategories_id" style="width:auto;min-width: 100px;" class="mui-select"></select>
+                </span>
+                <a id='btnRefreshCategories' class="fa fa-refresh"></a>
+                <a href="../Categories/add.html" class="mui-icon mui-icon-plusempty"></a>
+            </div>
+            <div class="mui-input-row" style="padding-left: 20px;">
+                <span class="fa fa-tags"></span>
+                <input id="ftags" type="text" style="width: auto;" placeholder="标签，用英文逗号','分隔" />
+            </div>
+            <div class="mui-input-row" style="padding-left: 20px;">
+                <span class="fa fa-credit-card"></span>
+                <span style="margin-left: 15px">
+                    <select id="fwallets_id" style="width:auto;min-width: 100px;" class="mui-select"></select>
+                </span>
+                <a id='btnRefreshWallets' class="fa fa-refresh"></a>
+                <a href="../Wallets/add.html" class="mui-icon mui-icon-plusempty"></a>
+            </div>
+            <div class="mui-input-row" style="padding-left: 20px;">
+                <span class="fa fa-edit" style="width: auto;"></span>
+                <input id="fnote" type="text" maxlength="15" placeholder="备注信息" style="width: auto;" />
+            </div>
+            <div class="mui-input-row mui-checkbox mui-right">
+                <label>交易已确认</label>
+                <input id="fconfirm" type="checkbox">
+            </div>
+            <div class="mui-input-row mui-checkbox mui-right">
+                <label>包含在总计中</label>
+                <input id="freport" type="checkbox">
+            </div>
+        </div>
+    </div>
+    <div class="mui-bar-footer">
+        <div class="mui-button-row">
+            <button type="button" class="mui-btn mui-btn-danger" onclick="history.back()">取消</button>
+            <button id="btnSave" type="button" class="mui-btn mui-btn-primary">确认</button>
+        </div>
+    </div>
+    <script>
+        mui.ready(function() {
+            var ftoken = {
+                'ftoken': app.getFuid(),
+            }
+            /* 设置可提交状态 */
+            var fstat = 1; // 1,0
+            /* 获取分类列表 */
+            function RefreshCategories() {
+                var fcategories_id = document.getElementById('fcategories_id');
+                app.getData('/Categories/get.aspx', ftoken, function(d) {
+                    if(d['Body'] == null || d['Body'].length < 1) {
+                        mui.toast('请先添加分类');
+                        fstat = 0;
+                        return;
+                    }
+                    var str = "";
+                    d['Body'].forEach(function(values) {
+                        str += '<option value="' + values['fcategories_id'] + '">';
+                        str += values['fcategories_name'] + '</option>';
+                    });
+                    fcategories_id.innerHTML = str;
+                });
+            }
+
+            /* 获取账户列表 */
+            function RefreshWallets() {
+                var fwallets_id = document.getElementById('fwallets_id');
+                app.getData('/Wallets/get.aspx', ftoken, function(d) {
+                    if(d['Body'] == null || d["Body"].length < 1) {
+                        mui.toast('请先添加账户');
+                        fstat = 0;
+                        return;
+                    }
+                    var str = "";
+                    d['Body'].forEach(function(values) {
+                        str += '<option value="' + values['fwallets_id'] + '">';
+                        str += values['fwallets_name'] + '</option>';;
+                    });
+                    fwallets_id.innerHTML = str;
+                });
+            }
+
+            var fincomeStat = 0; // 收入/支出标记
+            document.getElementById('fincome').addEventListener("click", function check(e) {
+                mui.toast(fincomeStat);
+                fincomeStat = fincomeStat == 0 ? 1 : 0;
+            });
+            var freportStat = 0; // 包含在总计状态
+            document.getElementById('freport').addEventListener("click", function check(e) {
+                freportStat = freportStat == 0 ? 1 : 0;
+            });
+            var fconfirmStat = 0; // 交易确认状态
+            document.getElementById('fconfirm').addEventListener("click", function check(e) {
+                fconfirmStat = fconfirmStat == 0 ? 1 : 0;
+            });
+
+            document.getElementById('btnSave').addEventListener("click", function() {
+                if(fstat == 0) {
+                    mui.toast('请先添加账户或者分类');
+                    return;
+                }
+                var fcategories_id = document.getElementById('fcategories_id').value;
+                var fwallets_id = document.getElementById('fwallets_id').value;
+                var ftags = document.getElementById('ftags').value;
+                var fbalance = document.getElementById('fbalance').value;
+                if(parseFloat(fbalance).toString() == "NaN") {
+                    mui.toast('请输入正确的金额数');
+                    return;
+                }
+                var fnote = document.getElementById('fnote').value;
+                var fdate = document.getElementById('fdate').value;
+                var fincome = fincomeStat;
+                var tradeinfo = {
+                    'ftoken': localStorage.ftoken,
+                    'fincome': fincome,
+                    'fbalance': fbalance,
+                    'fdate': fdate,
+                    'fcategories_id': fcategories_id,
+                    'ftags': ftags,
+                    'fwallets_id': fwallets_id,
+                    'fnote': fnote,
+                    'freport': freportStat,
+                    'fconfirm': fconfirmStat
+                }
+                console.log(tradeinfo);
+                mui.ajax('/Trades/add.aspx', {
+                    data: tradeinfo,
+                    dataType: 'json', //服务器返回json格式数据
+                    type: 'post', //HTTP请求类型
+                    timeout: 10000, //超时时间设置为10秒；
+                    success: function(data) {
+                        //服务器返回响应，根据响应结果，分析是否登录成功；
+                        mui.toast(data['Msg']);
+                    },
+                    error: function(xhr, type, errorThrown) {
+                        //异常处理；
+                        console.log(type);
+                    }
+                });
+            });
+            /* 手动刷新分类 */
+            document.getElementById('btnRefreshCategories').addEventListener('click', function() {
+                RefreshCategories()
+            });
+            /* 手动刷新钱包 */
+            document.getElementById('btnRefreshWallets').addEventListener('click', function() {
+                RefreshWallets()
+            });
+            /* 自动加载钱包,分类,标签信息 */
+            RefreshWallets();
+            RefreshCategories();
+        });
+    </script>
+</body>
+
+</html>
