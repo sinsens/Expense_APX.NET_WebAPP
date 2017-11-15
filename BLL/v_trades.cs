@@ -70,6 +70,7 @@ namespace Expense.BLL
                         {
                             count_type = "month";
                         }
+                        GetRecordCount("fuid='" + v_trades.fuid + "' AND year(fdate) = ");
 
                     }
 

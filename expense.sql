@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50626
 File Encoding         : 65001
 
-Date: 2017-11-15 10:31:55
+Date: 2017-11-15 12:36:48
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -56,7 +56,6 @@ CREATE TABLE `t_trades` (
   `fwallets_id` varchar(40) NOT NULL COMMENT '钱包',
   `fmoney` int(11) NOT NULL DEFAULT '0' COMMENT '金额',
   `fnote` varchar(128) DEFAULT '' COMMENT '备注信息',
-  `fconfirm` int(1) NOT NULL DEFAULT '1' COMMENT '交易确认标注',
   `freport` int(1) NOT NULL DEFAULT '1' COMMENT '包含在报表中',
   `fdate` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '日期',
   PRIMARY KEY (`ftrades_id`),
@@ -105,7 +104,7 @@ CREATE TABLE `t_wallets` (
 -- View structure for v_trades
 -- ----------------------------
 DROP VIEW IF EXISTS `v_trades`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY INVOKER  VIEW `v_trades` AS SELECT
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER  VIEW `v_trades` AS SELECT
 t_trades.fuid,
 t_trades.ftrades_id,
 t_trades.fincome,
@@ -114,7 +113,6 @@ t_trades.ftags,
 t_trades.fwallets_id,
 t_trades.fmoney,
 t_trades.fnote,
-t_trades.fconfirm,
 t_trades.freport,
 t_trades.fdate,
 t_categories.fcategories_name,

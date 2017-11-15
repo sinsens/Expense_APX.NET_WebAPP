@@ -37,9 +37,9 @@ namespace Expense.DAL
 		{
 			StringBuilder strSql=new StringBuilder();
 			strSql.Append("insert into t_trades(");
-			strSql.Append("fuid,ftrades_id,fincome,fcategories_id,ftags,fwallets_id,fmoney,fnote,fconfirm,freport,fdate)");
+			strSql.Append("fuid,ftrades_id,fincome,fcategories_id,ftags,fwallets_id,fmoney,fnote,freport,fdate)");
 			strSql.Append(" values (");
-			strSql.Append("@fuid,@ftrades_id,@fincome,@fcategories_id,@ftags,@fwallets_id,@fmoney,@fnote,@fconfirm,@freport,@fdate)");
+			strSql.Append("@fuid,@ftrades_id,@fincome,@fcategories_id,@ftags,@fwallets_id,@fmoney,@fnote,@freport,@fdate)");
 			MySqlParameter[] parameters = {
 					new MySqlParameter("@fuid", MySqlDbType.VarChar,40),
 					new MySqlParameter("@ftrades_id", MySqlDbType.VarChar,40),
@@ -49,7 +49,6 @@ namespace Expense.DAL
 					new MySqlParameter("@fwallets_id", MySqlDbType.VarChar,40),
 					new MySqlParameter("@fmoney", MySqlDbType.Int32,11),
 					new MySqlParameter("@fnote", MySqlDbType.VarChar,128),
-					new MySqlParameter("@fconfirm", MySqlDbType.Int32,1),
 					new MySqlParameter("@freport", MySqlDbType.Int32,1),
 					new MySqlParameter("@fdate", MySqlDbType.DateTime)};
 			parameters[0].Value = model.fuid;
@@ -60,9 +59,8 @@ namespace Expense.DAL
 			parameters[5].Value = model.fwallets_id;
 			parameters[6].Value = model.fmoney;
 			parameters[7].Value = model.fnote;
-			parameters[8].Value = model.fconfirm;
-			parameters[9].Value = model.freport;
-			parameters[10].Value = model.fdate;
+			parameters[8].Value = model.freport;
+			parameters[9].Value = model.fdate;
 
 			int rows=DbHelperMySQL.ExecuteSql(strSql.ToString(),parameters);
 			if (rows > 0)
@@ -88,7 +86,6 @@ namespace Expense.DAL
 			strSql.Append("fwallets_id=@fwallets_id,");
 			strSql.Append("fmoney=@fmoney,");
 			strSql.Append("fnote=@fnote,");
-			strSql.Append("fconfirm=@fconfirm,");
 			strSql.Append("freport=@freport,");
 			strSql.Append("fdate=@fdate");
 			strSql.Append(" where ftrades_id=@ftrades_id ");
@@ -100,7 +97,6 @@ namespace Expense.DAL
 					new MySqlParameter("@fwallets_id", MySqlDbType.VarChar,40),
 					new MySqlParameter("@fmoney", MySqlDbType.Int32,11),
 					new MySqlParameter("@fnote", MySqlDbType.VarChar,128),
-					new MySqlParameter("@fconfirm", MySqlDbType.Int32,1),
 					new MySqlParameter("@freport", MySqlDbType.Int32,1),
 					new MySqlParameter("@fdate", MySqlDbType.DateTime),
 					new MySqlParameter("@ftrades_id", MySqlDbType.VarChar,40)};
@@ -111,10 +107,9 @@ namespace Expense.DAL
 			parameters[4].Value = model.fwallets_id;
 			parameters[5].Value = model.fmoney;
 			parameters[6].Value = model.fnote;
-			parameters[7].Value = model.fconfirm;
-			parameters[8].Value = model.freport;
-			parameters[9].Value = model.fdate;
-			parameters[10].Value = model.ftrades_id;
+			parameters[7].Value = model.freport;
+			parameters[8].Value = model.fdate;
+			parameters[9].Value = model.ftrades_id;
 
 			int rows=DbHelperMySQL.ExecuteSql(strSql.ToString(),parameters);
 			if (rows > 0)
@@ -177,7 +172,7 @@ namespace Expense.DAL
 		{
 			
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select fuid,ftrades_id,fincome,fcategories_id,ftags,fwallets_id,fmoney,fnote,fconfirm,freport,fdate from t_trades ");
+			strSql.Append("select fuid,ftrades_id,fincome,fcategories_id,ftags,fwallets_id,fmoney,fnote,freport,fdate from t_trades ");
 			strSql.Append(" where ftrades_id=@ftrades_id ");
 			MySqlParameter[] parameters = {
 					new MySqlParameter("@ftrades_id", MySqlDbType.VarChar,40)			};
@@ -236,10 +231,6 @@ namespace Expense.DAL
 				{
 					model.fnote=row["fnote"].ToString();
 				}
-				if(row["fconfirm"]!=null && row["fconfirm"].ToString()!="")
-				{
-					model.fconfirm=int.Parse(row["fconfirm"].ToString());
-				}
 				if(row["freport"]!=null && row["freport"].ToString()!="")
 				{
 					model.freport=int.Parse(row["freport"].ToString());
@@ -258,7 +249,7 @@ namespace Expense.DAL
 		public DataSet GetList(string strWhere)
 		{
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select fuid,ftrades_id,fincome,fcategories_id,ftags,fwallets_id,fmoney,fnote,fconfirm,freport,fdate ");
+			strSql.Append("select fuid,ftrades_id,fincome,fcategories_id,ftags,fwallets_id,fmoney,fnote,freport,fdate ");
 			strSql.Append(" FROM t_trades ");
 			if(strWhere.Trim()!="")
 			{

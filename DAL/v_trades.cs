@@ -23,9 +23,9 @@ namespace Expense.DAL
 		{
 			StringBuilder strSql=new StringBuilder();
 			strSql.Append("insert into v_trades(");
-			strSql.Append("fuid,ftrades_id,fincome,fcategories_id,ftags,fwallets_id,fmoney,fnote,fconfirm,freport,fdate,fcategories_name,fwallets_name,fcategories_color)");
+			strSql.Append("fuid,ftrades_id,fincome,fcategories_id,ftags,fwallets_id,fmoney,fnote,freport,fdate,fcategories_name,fwallets_name,fcategories_color)");
 			strSql.Append(" values (");
-			strSql.Append("@fuid,@ftrades_id,@fincome,@fcategories_id,@ftags,@fwallets_id,@fmoney,@fnote,@fconfirm,@freport,@fdate,@fcategories_name,@fwallets_name,@fcategories_color)");
+			strSql.Append("@fuid,@ftrades_id,@fincome,@fcategories_id,@ftags,@fwallets_id,@fmoney,@fnote,@freport,@fdate,@fcategories_name,@fwallets_name,@fcategories_color)");
 			MySqlParameter[] parameters = {
 					new MySqlParameter("@fuid", MySqlDbType.VarChar,40),
 					new MySqlParameter("@ftrades_id", MySqlDbType.VarChar,40),
@@ -35,7 +35,6 @@ namespace Expense.DAL
 					new MySqlParameter("@fwallets_id", MySqlDbType.VarChar,40),
 					new MySqlParameter("@fmoney", MySqlDbType.Int32,11),
 					new MySqlParameter("@fnote", MySqlDbType.VarChar,128),
-					new MySqlParameter("@fconfirm", MySqlDbType.Int32,1),
 					new MySqlParameter("@freport", MySqlDbType.Int32,1),
 					new MySqlParameter("@fdate", MySqlDbType.DateTime),
 					new MySqlParameter("@fcategories_name", MySqlDbType.VarChar,20),
@@ -49,12 +48,11 @@ namespace Expense.DAL
 			parameters[5].Value = model.fwallets_id;
 			parameters[6].Value = model.fmoney;
 			parameters[7].Value = model.fnote;
-			parameters[8].Value = model.fconfirm;
-			parameters[9].Value = model.freport;
-			parameters[10].Value = model.fdate;
-			parameters[11].Value = model.fcategories_name;
-			parameters[12].Value = model.fwallets_name;
-			parameters[13].Value = model.fcategories_color;
+			parameters[8].Value = model.freport;
+			parameters[9].Value = model.fdate;
+			parameters[10].Value = model.fcategories_name;
+			parameters[11].Value = model.fwallets_name;
+			parameters[12].Value = model.fcategories_color;
 
 			int rows=DbHelperMySQL.ExecuteSql(strSql.ToString(),parameters);
 			if (rows > 0)
@@ -81,7 +79,6 @@ namespace Expense.DAL
 			strSql.Append("fwallets_id=@fwallets_id,");
 			strSql.Append("fmoney=@fmoney,");
 			strSql.Append("fnote=@fnote,");
-			strSql.Append("fconfirm=@fconfirm,");
 			strSql.Append("freport=@freport,");
 			strSql.Append("fdate=@fdate,");
 			strSql.Append("fcategories_name=@fcategories_name,");
@@ -97,7 +94,6 @@ namespace Expense.DAL
 					new MySqlParameter("@fwallets_id", MySqlDbType.VarChar,40),
 					new MySqlParameter("@fmoney", MySqlDbType.Int32,11),
 					new MySqlParameter("@fnote", MySqlDbType.VarChar,128),
-					new MySqlParameter("@fconfirm", MySqlDbType.Int32,1),
 					new MySqlParameter("@freport", MySqlDbType.Int32,1),
 					new MySqlParameter("@fdate", MySqlDbType.DateTime),
 					new MySqlParameter("@fcategories_name", MySqlDbType.VarChar,20),
@@ -111,12 +107,11 @@ namespace Expense.DAL
 			parameters[5].Value = model.fwallets_id;
 			parameters[6].Value = model.fmoney;
 			parameters[7].Value = model.fnote;
-			parameters[8].Value = model.fconfirm;
-			parameters[9].Value = model.freport;
-			parameters[10].Value = model.fdate;
-			parameters[11].Value = model.fcategories_name;
-			parameters[12].Value = model.fwallets_name;
-			parameters[13].Value = model.fcategories_color;
+			parameters[8].Value = model.freport;
+			parameters[9].Value = model.fdate;
+			parameters[10].Value = model.fcategories_name;
+			parameters[11].Value = model.fwallets_name;
+			parameters[12].Value = model.fcategories_color;
 
 			int rows=DbHelperMySQL.ExecuteSql(strSql.ToString(),parameters);
 			if (rows > 0)
@@ -160,7 +155,7 @@ namespace Expense.DAL
 		{
 			//该表无主键信息，请自定义主键/条件字段
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select fuid,ftrades_id,fincome,fcategories_id,ftags,fwallets_id,fmoney,fnote,fconfirm,freport,fdate,fcategories_name,fwallets_name,fcategories_color from v_trades ");
+			strSql.Append("select fuid,ftrades_id,fincome,fcategories_id,ftags,fwallets_id,fmoney,fnote,freport,fdate,fcategories_name,fwallets_name,fcategories_color from v_trades ");
 			strSql.Append(" where ");
 			MySqlParameter[] parameters = {
 			};
@@ -218,10 +213,6 @@ namespace Expense.DAL
 				{
 					model.fnote=row["fnote"].ToString();
 				}
-				if(row["fconfirm"]!=null && row["fconfirm"].ToString()!="")
-				{
-					model.fconfirm=int.Parse(row["fconfirm"].ToString());
-				}
 				if(row["freport"]!=null && row["freport"].ToString()!="")
 				{
 					model.freport=int.Parse(row["freport"].ToString());
@@ -252,7 +243,7 @@ namespace Expense.DAL
 		public DataSet GetList(string strWhere)
 		{
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select fuid,ftrades_id,fincome,fcategories_id,ftags,fwallets_id,fmoney,fnote,fconfirm,freport,fdate,fcategories_name,fwallets_name,fcategories_color ");
+			strSql.Append("select fuid,ftrades_id,fincome,fcategories_id,ftags,fwallets_id,fmoney,fnote,freport,fdate,fcategories_name,fwallets_name,fcategories_color ");
 			strSql.Append(" FROM v_trades ");
 			if(strWhere.Trim()!="")
 			{
@@ -260,7 +251,55 @@ namespace Expense.DAL
 			}
 			return DbHelperMySQL.Query(strSql.ToString());
 		}
-        /// <summary>
+
+		/// <summary>
+		/// 获取记录总数
+		/// </summary>
+		public int GetRecordCount(string strWhere)
+		{
+			StringBuilder strSql=new StringBuilder();
+			strSql.Append("select count(1) FROM v_trades ");
+			if(strWhere.Trim()!="")
+			{
+				strSql.Append(" where "+strWhere);
+			}
+			object obj = DbHelperSQL.GetSingle(strSql.ToString());
+			if (obj == null)
+			{
+				return 0;
+			}
+			else
+			{
+				return Convert.ToInt32(obj);
+			}
+		}
+		/// <summary>
+		/// 分页获取数据列表
+		/// </summary>
+		public DataSet GetListByPage(string strWhere, string orderby, int startIndex, int endIndex)
+		{
+			StringBuilder strSql=new StringBuilder();
+			strSql.Append("SELECT * FROM ( ");
+			strSql.Append(" SELECT ROW_NUMBER() OVER (");
+			if (!string.IsNullOrEmpty(orderby.Trim()))
+			{
+				strSql.Append("order by T." + orderby );
+			}
+			else
+			{
+				strSql.Append("order by T. desc");
+			}
+			strSql.Append(")AS Row, T.*  from v_trades T ");
+			if (!string.IsNullOrEmpty(strWhere.Trim()))
+			{
+				strSql.Append(" WHERE " + strWhere);
+			}
+			strSql.Append(" ) TT");
+			strSql.AppendFormat(" WHERE TT.Row between {0} and {1}", startIndex, endIndex);
+			return DbHelperMySQL.Query(strSql.ToString());
+		}
+		
+		/// <summary>
         /// 分页获取数据列表，Sinsen
         /// </summary>
         public DataSet GetListByPage(string strWhere,  int startIndex, int endIndex)
@@ -283,28 +322,6 @@ namespace Expense.DAL
             return DbHelperMySQL.Query(strSql.ToString());
         }
 
-        /// <summary>
-        /// 获取记录总数
-        /// </summary>
-        public int GetRecordCount(string strWhere)
-		{
-			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select count(1) FROM v_trades ");
-			if(strWhere.Trim()!="")
-			{
-				strSql.Append(" where "+strWhere);
-			}
-			object obj = DbHelperSQL.GetSingle(strSql.ToString());
-			if (obj == null)
-			{
-				return 0;
-			}
-			else
-			{
-				return Convert.ToInt32(obj);
-			}
-		}
-
 		/*
 		/// <summary>
 		/// 分页获取数据列表
@@ -321,7 +338,7 @@ namespace Expense.DAL
 					new MySqlParameter("@strWhere", MySqlDbType.VarChar,1000),
 					};
 			parameters[0].Value = "v_trades";
-			parameters[1].Value = "ftrades_id";
+			parameters[1].Value = "";
 			parameters[2].Value = PageSize;
 			parameters[3].Value = PageIndex;
 			parameters[4].Value = 0;

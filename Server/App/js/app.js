@@ -122,49 +122,6 @@
 		return localStorage.getItem('ftoken') == null ? false : localStorage.getItem('ftoken');
 	}
 
-	/*
-	 Tag标签操作
-	 2017年11月11日 18点30分，已注销
-	*/
-	/*
-	owner.Tag_Add = function(tag) {
-		var data = {
-			'ftoken': this.getFuid(),
-			'fname': tag.fname,
-		}
-		this.myPost('/Tags/add.aspx', data);
-	}
-
-	owner.Tag_Update = function(tag) {
-		var data = {
-			'ftoken': this.getFuid(),
-			'fid': tag.fid,
-			'fname': tag.fname,
-		}
-		this.myPost('/Tags/update.aspx', data);
-	}
-	owner.Tag_Delte = function(fid) {
-		var data = {
-			'ftoken': this.getFuid(),
-			'fid': fid,
-		}
-		this.myPost('/Tags/delete.aspx', data);
-	}
-	owner.Tag_Get = function() {
-		var mydata = {
-			'ftoken': this.getFuid()
-		}
-		mui.getJSON('/Tags/get.aspx', mydata,
-			function(data) {
-				return data['Body'];
-			}
-		);
-	}
-	*/
-
-	/*
-	 Categories分类操作
-	*/
 	owner.Categorie_Add = function(Categorie) {
 		var data = {
 			'ftoken': this.getFuid(),
@@ -238,17 +195,6 @@
 	}
 
 	owner.Trade_Update= function(Trade) {
-		/*var data = {
-			'fid': Trade.fid,
-			'ftoken': this.getFuid(),
-			'fcategories_id': Trade.fcategories_id,
-			'freport': Trade.freport,
-			'fnote': Trade.fnote,
-			'fbalance': Trade.fbalance,
-			'fconfirm': Trade.fconfirm,
-			'fincomee': Trade.fincomee,
-			'fdate': Trade.fdate
-		}*/
 		this.myPost('/Trades/update.aspx', Trade);
 	}
 	owner.Trade_Delte = function(fid) {

@@ -209,7 +209,6 @@ namespace Expense.BLL
                 trades.ftrades_id = Guid.NewGuid().ToString();
                 trades.fcategories_id = c[0].fcategories_id;
                 trades.fwallets_id = model.fwallets_id;
-                trades.fconfirm = 1; // 交易已确认
                 trades.fdate = DateTime.Now;
                 trades.freport = 1; // 包含在报表中
                 trades.fincome = model.fbalance > w.fbalance ? 1 : 0;// 通过

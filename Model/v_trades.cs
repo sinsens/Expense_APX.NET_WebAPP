@@ -10,19 +10,18 @@ namespace Expense.Model
 		public v_trades()
 		{}
 		#region Model
-		private string _fuid= "0";
-		private string _ftrades_id= "0";
+		private string _fuid;
+		private string _ftrades_id;
 		private int _fincome=0;
-		private string _fcategories_id= "0";
-		private string _ftags= "0";
-		private string _fwallets_id= "0";
+		private string _fcategories_id;
+		private string _ftags;
+		private string _fwallets_id;
 		private int _fmoney=0;
-		private string _fnote= "0";
-		private int _fconfirm=1;
+		private string _fnote;
 		private int _freport=1;
 		private DateTime _fdate;
-		private string _fcategories_name= "0";
-		private string _fwallets_name= "0";
+		private string _fcategories_name;
+		private string _fwallets_name;
 		private string _fcategories_color;
 		/// <summary>
 		/// 
@@ -87,14 +86,6 @@ namespace Expense.Model
 		{
 			set{ _fnote=value;}
 			get{return _fnote;}
-		}
-		/// <summary>
-		/// 
-		/// </summary>
-		public int fconfirm
-		{
-			set{ _fconfirm=value;}
-			get{return _fconfirm;}
 		}
 		/// <summary>
 		/// 

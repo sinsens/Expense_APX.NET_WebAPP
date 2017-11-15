@@ -39,7 +39,6 @@ namespace Expense.BLL
                 var fbalence = Convert.ToInt32(Request["fbalance"]);
                 var fdate = Convert.ToDateTime(Request["fdate"]); // 日期和时间
                 var freport = Convert.ToInt32(Request["freport"]);
-                var fconfirm = Convert.ToInt32(Request["fconfirm"]);
 
                 var b = new Expense.BLL.users();
 
@@ -57,7 +56,6 @@ namespace Expense.BLL
                     trades.fdate = fdate;
                     trades.fnote = fnote;
                     trades.freport = freport;
-                    trades.fconfirm = fconfirm;
                     trades.fuid = b.GetModelByToken(ftoken).fuid;
                     if (Add(trades))
                     {
@@ -80,7 +78,7 @@ namespace Expense.BLL
             }
             else
             {
-                message.Msg = Request.HttpMethod + " : " + Request.FilePath + "?ftoken=[<string>]&fcategories_id=[<string>]&fwallets_id=[<string>]&ftags=[<string,string,...>]&fnote=[<string>]&fbalence=[<int>]&fdate=[<string>]&fincomee=[0,1]&freport=[0,1]&fconfirm=[0,1]";
+                message.Msg = Request.HttpMethod + " : " + Request.FilePath + "?ftoken=[<string>]&fcategories_id=[<string>]&fwallets_id=[<string>]&ftags=[<string,string,...>]&fnote=[<string>]&fbalence=[<int>]&fdate=[<string>]&fincome=[0,1]&freport=[0,1]";
             }
             return JsonConvert.SerializeObject(message, Formatting.Indented);
         }
@@ -146,7 +144,6 @@ namespace Expense.BLL
                     trades.fdate = fdate;
                     trades.fnote = fnote;
                     trades.freport = freport;
-                    trades.fconfirm = fconfirm;
                     trades.fuid = b.GetModelByToken(ftoken).fuid;
                     if (Update(trades))
                     {
@@ -168,7 +165,7 @@ namespace Expense.BLL
             }
             else
             {
-                message.Msg = Request.HttpMethod + " : " + Request.FilePath + "?ftoken=[<string>]&fid=[<string>]&fcategories_id=[<string>]&fwallets_id=[<string>]&ftags=[<string,string,...>]&fnote=[<string>]&fbalence=[<int>]&fdate=[<string>]&fincomee=[0,1]&freport=[0,1]&fconfirm=[0,1]";
+                message.Msg = Request.HttpMethod + " : " + Request.FilePath + "?ftoken=[<string>]&fid=[<string>]&fcategories_id=[<string>]&fwallets_id=[<string>]&ftags=[<string,string,...>]&fnote=[<string>]&fbalence=[<int>]&fdate=[<string>]&fincome=[0,1]&freport=[0,1]";
             }
             return JsonConvert.SerializeObject(message, Formatting.Indented);
         }

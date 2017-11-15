@@ -66,10 +66,6 @@
 					<input id="fnote" type="text" maxlength="15" placeholder="备注信息" style="width: auto;" />
 				</div>
 				<div class="mui-input-row mui-checkbox mui-right">
-					<label>交易已确认</label>
-					<input id="fconfirm" type="checkbox">
-				</div>
-				<div class="mui-input-row mui-checkbox mui-right">
 					<label>包含在总计中</label>
 					<input id="freport" type="checkbox">
 				</div>
@@ -145,10 +141,6 @@
 				document.getElementById('freport').addEventListener("click", function check(e) {
 					freportStat = freportStat == 0 ? 1 : 0;
 				});
-				var fconfirmStat = 0; // 交易确认状态
-				document.getElementById('fconfirm').addEventListener("click", function check(e) {
-					fconfirmStat = fconfirmStat == 0 ? 1 : 0;
-				});
 
 				/* 提交处理 */
 				document.getElementById('btnSave').addEventListener("click", function() {
@@ -178,7 +170,6 @@
 						'fwallets_id': fwallets_id,
 						'fnote': fnote,
 						'freport': freportStat,
-						'fconfirm': fconfirmStat
 					}
 					console.log(tradeinfo);
 					mui.ajax('/Trades/update.aspx', {

@@ -18,7 +18,6 @@ namespace Expense.Model
 		private string _fwallets_id;
 		private int _fmoney=0;
 		private string _fnote;
-		private int _fconfirm=1;
 		private int _freport=1;
 		private DateTime _fdate;
 		/// <summary>
@@ -84,14 +83,6 @@ namespace Expense.Model
 		{
 			set{ _fnote=value;}
 			get{return _fnote;}
-		}
-		/// <summary>
-		/// 
-		/// </summary>
-		public int fconfirm
-		{
-			set{ _fconfirm=value;}
-			get{return _fconfirm;}
 		}
 		/// <summary>
 		/// 
