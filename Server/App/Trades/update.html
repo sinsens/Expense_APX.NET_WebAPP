@@ -209,10 +209,8 @@
 							d['Body'].forEach(function(values) {
 								fincomeStat = values['fincome'];
 								freportStat = values['freport'];
-								fconfirmStat = values['fconfirm'];
 								document.getElementById('fincome').checked = values['fincome'] == 1 ? true : false;
 								document.getElementById('freport').checked = freportStat == 1 ? true : false;
-								document.getElementById('fconfirm').checked = fconfirmStat == 1 ? true : false;
 								document.getElementById('fcategories_id').value = values['fcategories_id'];
 								document.getElementById('fwallets_id').value = values['fwallets_id'];
 								document.getElementById('ftags').value = values['ftags'];

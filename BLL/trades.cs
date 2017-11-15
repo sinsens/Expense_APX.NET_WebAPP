@@ -180,14 +180,14 @@ namespace Expense.BLL
             try
             {
                 /// 获取先前的金额
-                var t = trades.GetModel(model.ftrades_id); // 获取旧记录信息
+                var old = trades.GetModel(model.ftrades_id); // 获取旧记录信息
                 /// 钱包先和旧记录计算再加入新记录
                 /// 处理钱包余额    
                 var w = wallets.GetModel(model.fwallets_id);
-                if (t.fincome.Equals(0))
-                    w.fbalance += t.fmoney;
+                if (old.fincome.Equals(0))
+                    w.fbalance += old.fmoney;
                 else
-                    w.fbalance -= t.fmoney;
+                    w.fbalance -= old.fmoney;
 
                 /// 计算新纪录
                 if (model.fincome.Equals(0))

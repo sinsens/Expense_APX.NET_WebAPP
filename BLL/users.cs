@@ -51,6 +51,7 @@ namespace Expense.BLL
                 string fusers_name = Request["username"];
                 string fusers_email = Request["email"];
                 string fusers_passwd = Request["passwd"];
+                System.Text.RegularExpressions.Regex re = new System.Text.RegularExpressions.Regex(@"[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?");//实例化一个Regex对象
                 if (fusers_name.Length < 5)
                 {
                     message.Code = 202;
@@ -60,6 +61,10 @@ namespace Expense.BLL
                 {
                     message.Code = 202;
                     message.Msg = "密码长度必须大于等于6个字符长度";
+                }else if (fusers_email.Length<8||(!re.IsMatch(fusers_email)))
+                {
+                    message.Code = 202;
+                    message.Msg = "邮箱格式不正确！";
                 }
                 else
                 {
@@ -87,13 +92,6 @@ namespace Expense.BLL
                         message.Code = 500;
                         message.Msg = "注册失败！";
                     }
-                }
-
-                System.Text.RegularExpressions.Regex re = new System.Text.RegularExpressions.Regex(@"[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?");//实例化一个Regex对象
-                if (fusers_email.Length < 5 || !re.IsMatch(fusers_name))
-                {
-                    message.Code = 202;
-                    message.Msg = "邮箱格式不正确！";
                 }
             }
             else
